@@ -29,9 +29,8 @@ jobs:
           cache: true
           cache-dependency-path: cmd/gospoof/go.sum
 
-      - name: Ensure deps (yaml + tidy)
+      - name: Ensure deps
         run: |
-          go get gopkg.in/yaml.v3@v3.0.1
           go mod tidy
           go list -m all
 
@@ -39,7 +38,7 @@ jobs:
         run: go build -v -o goSpoof .
 
       - name: Test
-        run: go test ./... -race -covermode=atomic -coverprofile=coverage.out
+        run: go test ./... -race
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
@@ -47,4 +46,3 @@ jobs:
           name: goSpoof-${{ github.sha }}
           path: |
             ${{ github.workspace }}/cmd/gospoof/goSpoof
-            ${{ github.workspace }}/cmd/gospoof/coverage.out
